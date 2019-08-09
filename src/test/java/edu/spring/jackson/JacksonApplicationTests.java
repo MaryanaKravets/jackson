@@ -1,6 +1,7 @@
 package edu.spring.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.spring.jackson.controller.JController;
 import edu.spring.jackson.dto.User;
 import edu.spring.jackson.service.IUserService;
 import edu.spring.jackson.service.UserService;
@@ -34,59 +35,59 @@ import java.util.Map;
 import java.util.Objects;
 
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringJUnit4ClassRunner.class)
-
+//@RunWith(SpringJUnit4ClassRunner.class)
 //@EnableAutoConfiguration
 //@WebMvcTest
-
-@AutoConfigureMockMvc
-@ContextConfiguration(classes = JacksonApplicationTestConfiguration.class)
+//@AutoConfigureMockMvc
+//@ContextConfiguration(classes = JController.class)
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class JacksonApplicationTests {
-
-@Autowired
-private MockMvc mockMvc;
-    @MockBean
+//@Autowired
+//private MockMvc mockMvc;
+  //  @MockBean
     private RestTemplate restTemplate;
     @LocalServerPort
     int randomServerPort;
    // @Autowired
-    @MockBean
-    private UserService  userService;
-    @MockBean
-    private IUserService iUserService;
+   // @MockBean
+    //private UserService  userService;
+    //@MockBean
+   // private IUserService iUserService;
 
     private String localURL = "http://localhost:" + randomServerPort;
 
 //
-//    public void setRestTemplate(RestTemplate restTemplate) {
-//        this.restTemplate = restTemplate;
-//    }
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Test
     public void testController() {
         User user = new User("Iryna", "Antonyak", "iryna1984@ukr.net");
-        String URL = localURL + "/add";
+       // String URL = localURL + "/add";
+        String URL="http://localhost:8080/add";
        // when(userService.printDataByEmail(any(User.class))).thenReturn(user);
 
-//        HttpEntity<User> httpEntity = new HttpEntity<>(user);
-//        ResponseEntity<HttpStatus> responseEntity = restTemplate.postForEntity(localURL, httpEntity, HttpStatus.class);
-//        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        HttpEntity<User> httpEntity = new HttpEntity<>(user);
+        ResponseEntity<HttpStatus> responseEntity = restTemplate.postForEntity(URL, httpEntity, HttpStatus.class);
+        assertEquals(HttpStatus.CREATED, responseEntity.getBody());
     }
 
-    @Test
-    public void testController2() {
-        Map<String, Boolean> stringBooleanMap = Map.of("hw1", true, "hw2", false, "hw3", true);
-        String URL = localURL + "/{olena1995@gmail.com}/get";
-        ResponseEntity<User> responseEntity = restTemplate.getForEntity(localURL, User.class);
-
-
-        //User.builder().body()
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Olena",responseEntity.getBody().getName());
-        assertEquals("Lisova", responseEntity.getBody().getSurName());
-        assertEquals(LocalDate.of(2019, 8, 2), responseEntity.getBody().getLastLoginDate());
-        assertEquals(1234, responseEntity.getBody().getAccessId());
-        assertEquals(stringBooleanMap, responseEntity.getBody().getHomeworkToIsDone());
-        }
+//    @Test
+//    public void testController2() {
+//        Map<String, Boolean> stringBooleanMap = Map.of("hw1", true, "hw2", false, "hw3", true);
+//        String URL = localURL + "/{olena1995@gmail.com}/get";
+//        ResponseEntity<User> responseEntity = restTemplate.getForEntity(localURL, User.class);
+//
+//
+//        //User.builder().body()
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals("Olena",responseEntity.getBody().getName());
+//        assertEquals("Lisova", responseEntity.getBody().getSurName());
+//        assertEquals(LocalDate.of(2019, 8, 2), responseEntity.getBody().getLastLoginDate());
+//        assertEquals(1234, responseEntity.getBody().getAccessId());
+//        assertEquals(stringBooleanMap, responseEntity.getBody().getHomeworkToIsDone());
+//        }
     }
 
